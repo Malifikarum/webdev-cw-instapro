@@ -1,3 +1,5 @@
+import { formatDistance } from "date-fns";
+import { ru } from 'date-fns/locale';
 import { USER_POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
 import { posts, goToPage, newLikePosts, getToken } from "../index.js";
@@ -53,7 +55,7 @@ export function renderUserPostsPageComponent({ appEl }) {
             ${element.description}
           </p>
           <p class="post-date">
-            ${element.date}
+          ${formatDistance(new Date(element.date), new Date, { locale: ru })} назад
           </p>
         </li>                  
       </ul>

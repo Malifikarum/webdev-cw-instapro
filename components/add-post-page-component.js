@@ -49,7 +49,14 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
     
     document.getElementById("add-button").addEventListener("click", () => {
       
-      const description = document.getElementById("description").value;
+      const description = document.getElementById("description").value
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("`", "&DiacriticalGrave;")
+        .replaceAll("'", "&apos;")
+        .replaceAll("'", "&apos;");
       console.log(description);
 
       onAddPostClick({
