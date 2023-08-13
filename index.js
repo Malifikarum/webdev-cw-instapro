@@ -164,6 +164,10 @@ const renderApp = () => {
         .then((responseData) => {
           console.log(responseData);
         })
+        .catch((error) => {
+          console.warn(error);
+          alert(error);
+        });
         // console.log("Добавляю пост...", { description, imageUrl });
         goToPage(POSTS_PAGE);
       },

@@ -96,7 +96,10 @@ export function renderUserPostsPageComponent({ appEl }) {
             });
           }
         })
-        
+        .catch((error) => {
+          console.warn(error);
+          alert(error);
+        });
       }
       else if(likeEl.dataset.like === "true") {
         removeLike({
@@ -115,6 +118,10 @@ export function renderUserPostsPageComponent({ appEl }) {
             });
           }
         })
+        .catch((error) => {
+          console.warn(error);
+          alert(error);
+        });
       }
 
     })

@@ -93,6 +93,10 @@ export function renderPostsPageComponent({ appEl }) {
         .then(() => {
           newLikePosts(POSTS_PAGE);
         })
+        .catch((error) => {
+          console.warn(error);
+          alert(error);
+        });
       }
       else if(likeEl.dataset.like === "true") {
         removeLike({
@@ -107,6 +111,10 @@ export function renderPostsPageComponent({ appEl }) {
         .then(() => {
           newLikePosts(POSTS_PAGE);
         })
+        .catch((error) => {
+          console.warn(error);
+          alert(error);
+        });
       }
 
     })
