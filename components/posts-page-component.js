@@ -1,12 +1,13 @@
-import { USER_POSTS_PAGE } from "../routes.js";
+import { POSTS_PAGE, USER_POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
-import { posts, goToPage } from "../index.js";
+import { posts, goToPage, getToken, newLikePosts } from "../index.js";
+import { addLike, getPosts, removeLike } from "../api.js";
 
 export function renderPostsPageComponent({ appEl }) {
-  // TODO: реализовать рендер постов из api
+  // TODO: реализовать рендер постов из api (ГОТОВО)
   console.log("Актуальный список постов:", posts);
 
-  const appPosts = posts.map((post) => {
+  let  appPosts = posts.map((post) => {
     return {
       description: post.description,
       imageUrl: post.imageUrl,
@@ -20,6 +21,7 @@ export function renderPostsPageComponent({ appEl }) {
       id: post.id,
     }
   })
+ 
 
   /**
    * TODO: чтобы отформатировать дату создания поста в виде "19 минут назад"
@@ -40,11 +42,11 @@ export function renderPostsPageComponent({ appEl }) {
               <img class="post-image" src="${element.imageUrl}">
             </div>
             <div class="post-likes">
-              <button data-post-id="${element.id}" class="like-button">
-                <img src="./assets/images/like-active.svg">
+              <button data-post-id="${element.id}" data-like="${element.like}" class="like-button">
+                <img src="${element.like ? "./assets/images/like-active.svg" : "./assets/images/like-not-active.svg"}">
               </button>
               <p class="post-likes-text">
-                Нравится: <strong>2</strong>
+                Нравится: <strong>${element.likes[element.likes.length - 1].name} и еще ${element.likes.length - 1}</strong>
               </p>
             </div>
             <p class="post-text">
@@ -73,5 +75,40 @@ export function renderPostsPageComponent({ appEl }) {
         userId: userEl.dataset.userId,
       });
     });
+  }
+
+  for (let likeEl of document.querySelectorAll(".like-button")) {
+    likeEl.addEventListener("click", () => {
+
+      if (likeEl.dataset.like === "false") {
+        addLike({
+          token: getToken(),
+          postId: likeEl.dataset.postId,
+        })
+        .then((responseData) => {
+          console.log(responseData);
+
+          return getPosts( {token: getToken()} );
+        })
+        .then(() => {
+          newLikePosts(POSTS_PAGE);
+        })
+      }
+      else if(likeEl.dataset.like === "true") {
+        removeLike({
+          token: getToken(),
+          postId: likeEl.dataset.postId,
+        })
+        .then((responseData) => {
+          console.log(responseData);
+
+          return getPosts( {token: getToken()} );
+        })
+        .then(() => {
+          newLikePosts(POSTS_PAGE);
+        })
+      }
+
+    })
   }
 }
