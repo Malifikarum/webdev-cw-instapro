@@ -31,6 +31,18 @@ export function renderPostsPageComponent({ appEl }) {
    */
 
   const appPostsHtml = appPosts.map((element, index) => {
+
+    let postIsLikes;
+    if (element.likes.length === 0) {
+      postIsLikes = "";      
+    }
+    else if (element.likes.length === 1) {
+      postIsLikes = element.likes[0].name;
+    }
+    else {
+      postIsLikes = element.likes[0].name + " и еще " + (element.likes.length-1);
+    }
+    
     return `
       <div class="page-container">
         <div class="header-container"></div>
@@ -48,7 +60,7 @@ export function renderPostsPageComponent({ appEl }) {
                 <img src="${element.like ? "./assets/images/like-active.svg" : "./assets/images/like-not-active.svg"}">
               </button>
               <p class="post-likes-text">
-                Нравится: <strong>${element.likes[element.likes.length - 1].name} и еще ${element.likes.length - 1}</strong>
+                Нравится: <strong>${postIsLikes}</strong>
               </p>
             </div>
             <p class="post-text">
